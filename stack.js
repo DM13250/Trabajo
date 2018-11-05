@@ -1,18 +1,18 @@
  "use strict";
 
 /* Esto es la pagina con las funciones */
- var NUMBERS_STACK = create();
+ var NUMBERS_LIST = create();
  function cleanData(){
  	document.getElementById ("num").value = "" ;  
  }
 
 function pushNumber(num){
 	var error = document.getElementById ("error");
-	var stack = document.getElementById ("stack");
+	var list = document.getElementById ("list");
 	error.innerHTML = "";  
  	try {
-	 	push(NUMBERS_STACK,num);
-	 	stack.innerHTML = toString(NUMBERS_STACK);
+	 	push(NUMBERS_LIST,num);
+	 	list.innerHTML = toString(NUMBERS_LIST);
  	} catch (err) {
  		error.innerHTML = err;
  	}	
@@ -20,21 +20,21 @@ function pushNumber(num){
 
 function popNumber (){
 	var error = document.getElementById ("error");
-	var stack = document.getElementById ("stack");
+	var list = document.getElementById ("list");
 	error.innerHTML = "";  
  	try {
-	 	pop(NUMBERS_STACK);
-	 	stack.innerHTML = toString(NUMBERS_STACK);
+	 	pop(NUMBERS_LIST);
+	 	list.innerHTML = toString(NUMBERS_LIST);
  	} catch (err) {
  		error.innerHTML = err;
  	}		
 }
 
 /* stack Functions */
- var MAXIMO_ELEMENTO = 5; 
+ var MAX_ELEMENTO = 5; 
  function create(){
  	var list = [];
- 	for (var i=0; i<MAX_ELEMEMENTO; i++){
+ 	for (var i = 0; i < MAX_ELEMEMENTO; i++){
  		list[i] = Number.NaN;
  	}
  	return list;
@@ -58,7 +58,7 @@ function popNumber (){
 
  function size(list){
  	var tam = 0;
- 	while (tam < MAX_ELEMEMENTO && !isNaN(stack[tam])){
+ 	while (tam < MAX_ELEMEMENTO && !isNaN(list[tam])){
  		tam++;
  	}
  	return tam;
@@ -79,9 +79,12 @@ function popNumber (){
  
 function addAt(list, elem, index){
 	elem = parseInt(elem);
- 	if (isNaN(elem) || isNaN(index)) {
+ 	if (isNaN(elem)) {
  		throw "El elemento no es un numero";
  	}
+	if(index > MAX_ELEMENTO){
+		throw "El indice esta fuera de los limites de la lista";
+	}
  	if (!isFull(list)){
 		var i = index;
 		var lenght = size(list);
@@ -99,9 +102,8 @@ function addAt(list, elem, index){
 }
 
 function get (list,index){
-	index = parseInt(elem);
-	if (isNaN(index)) {
- 		throw "El index no es un numero";
+	if (index > MAX_ELEMENTO) {
+ 		throw "El indice esta fuera de la lista";
  	}
 	var lenght = size(list);
 	else{
@@ -117,11 +119,40 @@ function get (list,index){
 }
 
 function indexOf(list, elem){
-	
+	elem = parseInt(elem);
+	var tam = size(list);
+	var i = 0;
+	var encontrado = -1;
+	if (isNaN(index)) {
+ 		throw "El index no es un numero";
+ 	}
+	else{
+		while (i <= tam || encontrado == 1){
+			if (elem === list[i]){
+				encontrado = 1;
+			}
+			i++;
+		}
+	}
+	return encontrado;
 }
 
-function lastIndexOf (list, eleme){
-	
+function lastIndexOf (list, elem){
+	elem = parseInt(elem);
+	var tam = size(list);
+	var encontrado = -1;
+	if (isNaN(elem)) {
+ 		throw "El elemento no es un numero";
+ 	}
+	else{
+		while (tam >= 0 || encontrado == 1){
+			if (elem === list[tam]){
+				encontrado = 1;
+			}
+			tam--;
+		}
+	}
+	return encontrado;
 }
 
  function toString(list){
@@ -136,22 +167,22 @@ function lastIndexOf (list, eleme){
  	return str;
  } 
 
- function search(stack,elem){
+ function search(list,elem){
  	var position = -1;
  	elem = parseInt(elem);
  	if (!isNaN(elem)) {
-	 	if (!isEmpty(stack)){
-	 		var length = size(stack);	
+	 	if (!isEmpty(list)){
+	 		var length = size(list);	
 	 		var i=0;
 	 		while (i<length && position === -1){
-	 			if (stack[i] === elem) {
+	 			if (list[i] === elem) {
 	 				position = i;
 	 			}
 	 			i++;
 	 		} 		 		
 	 	} 		
  	} else{
- 		throw "The element is not a number";
+ 		throw "El elemento no ha sido encontrado";
  	}
  	return position;
  } 
@@ -193,18 +224,18 @@ function remove(list, index){
 	var i = 0;
 	length = size(list);
 	var igual = false;
-	while (i < length ){
+	if(index > MAX_ELEMEMENTO){
+		throw "El indice esta fuera de los limites de la lista";
+	}
+	while (i < length){
 		if (list[i] == elem || igual ){
 			for(var x = i; x < length; x++){
 				var borrado = list[i];
 				var guardar =  list[(i+1)];
-				lista[i] = guardar;
+				list[i] = guardar;
 		}
 		igual = true;
 	}
-		else{
-			throw "El elemento no existe en la lista";
-		}
 		i++
 	}
 	return borrado;
@@ -214,6 +245,9 @@ function removeElement(list, elem){
 	var i = 0;
 	length = size(list);
 	var igual = false;
+	if(isNaN(elem)){
+		throw "El elemento no es un Number";
+	}
 	while (i < length ){
 		if (list[i] == elem || igual ){
 			for(var x = i; x < length; x++){
@@ -221,13 +255,22 @@ function removeElement(list, elem){
 				lista[i] = guardar;
 		}
 		igual = true;
-		else{
-			throw "El elemento no existe en la lista";
-		}
 		i++
 	}
 	return igual;
 }
+ 
+ function set(list, elem, index){
+	 if(!isNaN(elem)){
+		 throw "El elemento no es un numero";
+	 }
+	 if(index > MAX_ELEMEMENTO){
+		 throw "El indice esta fuera de los limites";
+	 }
+	 var guardar = list[index];
+	 list[index] = elem;
+	 return guardar;
+ }
  
  function testStack(){
  	//var queue = create (); 	

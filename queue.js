@@ -1,17 +1,17 @@
 "use strict";
 
 /* Page functions */
- var NUMBERS_LIST= create(); function cleanData(){
+ var NUMBERS_LISTOR= create(); function cleanData(){
  	document.getElementById ("num").value = "" ;  
  }
 
 function addNumber(num){
 	var error = document.getElementById ("error");
-	var queue = document.getElementById ("queue");
+	var queue = document.getElementById ("listOr");
 	error.innerHTML = "";  
  	try {
-	 	add(NUMBERS_QUEUE,num);
-	 	queue.innerHTML = toString(NUMBERS_QUEUE);
+	 	add(NUMBERS_LISTOR,num);
+	 	queue.innerHTML = toString(NUMBERS_LISTOR);
  	} catch (err) {
  		error.innerHTML = err;
  	}	
@@ -19,11 +19,11 @@ function addNumber(num){
 
 function pollNumber (){
 	var error = document.getElementById ("error");
-	var queue = document.getElementById ("queue");
+	var listOr = document.getElementById ("listOr");
 	error.innerHTML = "";  
  	try {
-	 	poll(NUMBERS_QUEUE);
-	 	queue.innerHTML = toString(NUMBERS_QUEUE);
+	 	poll(NUMBERS_LISTOR);
+	 	listOr.innerHTML = toString(NUMBERS_LISTOR);
  	} catch (err) {
  		error.innerHTML = err;
  	}		
@@ -63,19 +63,37 @@ function pollNumber (){
  	return length;
  } 
 
+ function ordenar(listOr){
+	 	for(var i = 0; i < length; i++ ){
+			for(var j = 0; j < length; j++){
+				if(listOr[i] > listOr[j]){
+                    //Intercambiamos valores
+                    int variableauxiliar = listOr[i];
+                    lista[i] = lista[j];
+                    lista[j] = variableauxiliar;
+ 
+                }
+			}
+		}
+		return listOr;
+ }
+ 
+ 
  function add(listOr,elem){
  	elem = parseInt(elem);
  	if (isNaN(elem)) {
  		throw "El elemento no es un numero";
  	}
- 	if (!isFull(queue)){
- 		listOr[size(listOr)] = elem;
+ 	if (!isFull(listOr)){
+		list[size(listOr)] = elem;
+		var length = size(listOr);
+		listOr = ordenar(listOr);
  	} else {
  		throw "La cola está llena. No puedes poner el elemento en él.";
  	}
  	return size(listOr);
  } 
-
+ 
  function poll(queue){
  	var elem = 0;
  	if (!isEmpty(queue)){ 			
@@ -101,6 +119,60 @@ function peek(queue){
  	} 	
  	return elem;
  }
+function get (listOr,index){
+	if (index > MAX_ELEMENTO) {
+ 		throw "El indice esta fuera de la lista";
+ 	}
+	var lenght = size(list);
+	else{
+		while (i < index){
+		var a = list[i];
+ 		list[i] = b;
+		b = a;
+ 	} else {
+ 		throw "La pila está llena. No puedes poner mas elementos en la lista.";
+ 	}
+ 	return listOr[index];
+	
+}
+
+function indexOf(list, elem){
+	elem = parseInt(elem);
+	var tam = size(list);
+	var i = 0;
+	var encontrado = -1;
+	if (isNaN(index)) {
+ 		throw "El index no es un numero";
+ 	}
+	else{
+		while (i <= tam || encontrado == 1){
+			if (elem === list[i]){
+				encontrado = 1;
+			}
+			i++;
+		}
+	}
+	return encontrado;
+}
+
+function lastIndexOf (listOr, elem){
+	elem = parseInt(elem);
+	listOr = ordenar(listOr);
+	var tam = size(listOr);
+	var encontrado = -1;
+	if (isNaN(elem)) {
+ 		throw "El elemento no es un numero";
+ 	}
+	else{
+		while (tam >= 0 || encontrado == 1){
+			if (elem === list[tam]){
+				encontrado = 1;
+			}
+			tam--;
+		}
+	}
+	return encontrado;
+}
 
  function toString(listOr){
  	var str = "";
@@ -168,12 +240,52 @@ function peek(queue){
  	return last;
  } 
 
+ function remove(list, index){
+	var i = 0;
+	length = size(list);
+	var igual = false;
+	if(index > MAX_ELEMEMENTO){
+		throw "El indice esta fuera de los limites de la lista";
+	}
+	while (i < length){
+		if (list[i] == elem || igual ){
+			for(var x = i; x < length; x++){
+				var borrado = list[i];
+				var guardar =  list[(i+1)];
+				list[i] = guardar;
+		}
+		igual = true;
+	}
+		i++
+	}
+	return borrado;
+}
+
+function removeElement(listOr, elem){
+	var i = 0;
+	length = size(listOr);
+	var igual = false;
+	if(isNaN(elem)){
+		throw "El elemento no es un numero";
+	}
+	while (i < length ){
+		if (listOr[i] == elem || igual ){
+			for(var x = i; x < length; x++){
+				var guardar =  listOr[(i+1)];
+				listOr[i] = guardar;
+		}
+		igual = true;
+		i++
+	}
+	return igual;
+}
+ 
  function testqueue(){
  	//var queue = create (); 	
- 	var queue=[]; 	
- 	console.log ("Capacidad: " + capacity(queue));
- 	console.log("Es vacía: " + isEmpty(queue));
- 	console.log("Tamaño: " + size(queue));
+ 	var listOr=[]; 	
+ 	console.log ("Capacidad: " + capacity(listOr));
+ 	console.log("Es vacía: " + isEmpty(listOr));
+ 	console.log("Tamaño: " + size(listOr));
 
  	try {
 	 	for (var i = 0; i<MAX_ELEMENTO; i++){
@@ -196,12 +308,12 @@ function peek(queue){
 	 	while (true){
 	 		console.log ("Unnonsumed Element: " + peek(queue));
 	 		console.log ("Consumed Element: " + poll(queue));
-	 		console.log ("The queue: " + toString(queue));	 	 		 	
+	 		console.log ("The queue: " + toString(listOr));	 	 		 	
 	 	}
  	} catch (err) {
  		console.log(err); //When the queue is empty, an exception will be catched.
  	}
 
- 	console.log ("La lista: " + toString(queue));	 	
+ 	console.log ("La lista: " + toString(listOr));	 	
  } 
 window.onload = testqueue;
