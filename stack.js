@@ -167,26 +167,6 @@ function lastIndexOf (list, elem){
  	return str;
  } 
 
- function search(list,elem){
- 	var position = -1;
- 	elem = parseInt(elem);
- 	if (!isNaN(elem)) {
-	 	if (!isEmpty(list)){
-	 		var length = size(list);	
-	 		var i=0;
-	 		while (i<length && position === -1){
-	 			if (list[i] === elem) {
-	 				position = i;
-	 			}
-	 			i++;
-	 		} 		 		
-	 	} 		
- 	} else{
- 		throw "El elemento no ha sido encontrado";
- 	}
- 	return position;
- } 
-
  function capacity(list){
  	return MAX_ELEMEMENTO;
  } 
@@ -275,9 +255,9 @@ function removeElement(list, elem){
  function testStack(){
  	//var queue = create (); 	
  	var stack=[]; 	
- 	console.log ("Capacidad: " + capacity(stack));
- 	console.log("Es vacía: " + isEmpty(stack));
- 	console.log("Longitud: " + size(stack));
+ 	console.log ("Capacidad: " + capacity(list));
+ 	console.log("Es vacía: " + isEmpty(list));
+ 	console.log("Longitud: " + size(list));
 
  	try {
 	 	for (var i=0; i<MAX_ELEMEMENTO; i++){

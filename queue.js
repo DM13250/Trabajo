@@ -62,22 +62,6 @@ function pollNumber (){
  	}
  	return length;
  } 
-
- function ordenar(listOr){
-	 	for(var i = 0; i < length; i++ ){
-			for(var j = 0; j < length; j++){
-				if(listOr[i] > listOr[j]){
-                    //Intercambiamos valores
-                    int variableauxiliar = listOr[i];
-                    lista[i] = lista[j];
-                    lista[j] = variableauxiliar;
- 
-                }
-			}
-		}
-		return listOr;
- }
- 
  
  function add(listOr,elem){
  	elem = parseInt(elem);
@@ -85,40 +69,22 @@ function pollNumber (){
  		throw "El elemento no es un numero";
  	}
  	if (!isFull(listOr)){
-		list[size(listOr)] = elem;
-		var length = size(listOr);
-		listOr = ordenar(listOr);
+		while(i < lenght){
+			if(listOr[i] < elem){
+					i++;
+			} else{
+				guardar = listOr[i];
+				listOr[i] = elem;
+				elem = guardar;
+			}
+		}
  	} else {
  		throw "La cola está llena. No puedes poner el elemento en él.";
  	}
  	return size(listOr);
  } 
  
- function poll(queue){
- 	var elem = 0;
- 	if (!isEmpty(queue)){ 			
- 		var lastIndex = size(queue)-1;	
- 		elem = queue[0]; 		 	 		
- 		for (var i=0; i<lastIndex;i++){
- 			queue[i] = queue[i+1];
- 		} 		 		
- 		queue[i] = Number.NaN;
- 	} else {
- 		throw "The queue is empty. You can't poll any element";
- 	} 	
- 	return elem;
- } 
 
-function peek(queue){
- 	var elem = 0;
- 	if (!isEmpty(queue)){ 			
- 		var lastIndex = size(queue)-1;	
- 		elem = queue[0]; 		 	 		
- 	} else {
- 		throw "The queue is empty. You can't peek any element";
- 	} 	
- 	return elem;
- }
 function get (listOr,index){
 	if (index > MAX_ELEMENTO) {
  		throw "El indice esta fuera de la lista";
@@ -136,16 +102,11 @@ function get (listOr,index){
 	
 }
 
-function indexOf(list, elem){
-	elem = parseInt(elem);
-	var tam = size(list);
-	var i = 0;
-	var encontrado = -1;
-	if (isNaN(index)) {
- 		throw "El index no es un numero";
- 	}
-	else{
-		while (i <= tam || encontrado == 1){
+function indexOf(listOr, elem){
+	if(isNaN(elem)){
+		throw "El elemento no es numero";
+	}
+ 	while (i <= tam || encontrado == 1){
 			if (elem === list[i]){
 				encontrado = 1;
 			}
@@ -153,7 +114,6 @@ function indexOf(list, elem){
 		}
 	}
 	return encontrado;
-}
 
 function lastIndexOf (listOr, elem){
 	elem = parseInt(elem);
@@ -186,25 +146,6 @@ function lastIndexOf (listOr, elem){
  	return str;
  } 
 
- function search(queue,elem){
- 	var position = -1;
- 	elem = parseInt(elem);
- 	if (!isNaN(elem)) {
-	 	if (!isEmpty(queue)){
-	 		var length = size(queue);	
-	 		var i=0;
-	 		while (i<length && position === -1){
-	 			if (queue[i] === elem) {
-	 				position = i;
-	 			}
-	 			i++;
-	 		} 		 		
-	 	} 	
- 	} else{
- 		throw "The element is not a number";
- 	}
- 	return position;
- } 
 
  function capacity(listOr){
  	return MAX_ELEMENTO;
@@ -240,24 +181,14 @@ function lastIndexOf (listOr, elem){
  	return last;
  } 
 
- function remove(list, index){
+ function remove(listOr, index){
 	var i = 0;
-	length = size(list);
+	length = size(listOr);
 	var igual = false;
 	if(index > MAX_ELEMEMENTO){
 		throw "El indice esta fuera de los limites de la lista";
 	}
-	while (i < length){
-		if (list[i] == elem || igual ){
-			for(var x = i; x < length; x++){
-				var borrado = list[i];
-				var guardar =  list[(i+1)];
-				list[i] = guardar;
-		}
-		igual = true;
-	}
-		i++
-	}
+	var borrado = listOr.splice(index);
 	return borrado;
 }
 
@@ -280,7 +211,7 @@ function removeElement(listOr, elem){
 	return igual;
 }
  
- function testqueue(){
+ function testlistOr(){
  	//var queue = create (); 	
  	var listOr=[]; 	
  	console.log ("Capacidad: " + capacity(listOr));
