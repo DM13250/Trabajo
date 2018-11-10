@@ -3,7 +3,7 @@
 /* Esto es la pagina con las funciones */
  var NUMBERS_LIST = create();
  function cleanData(){
- 	document.getElementById ("num").value = "" ;  
+ 	document.getElementById ("list").value = "" ;  
  }
 
 function pushNumber(num){
@@ -11,7 +11,7 @@ function pushNumber(num){
 	var list = document.getElementById ("list");
 	error.innerHTML = "";  
  	try {
-	 	push(NUMBERS_LIST,num);
+	 	add(NUMBERS_LIST,elem);
 	 	list.innerHTML = toString(NUMBERS_LIST);
  	} catch (err) {
  		error.innerHTML = err;
@@ -23,24 +23,24 @@ function popNumber (){
 	var list = document.getElementById ("list");
 	error.innerHTML = "";  
  	try {
-	 	pop(NUMBERS_LIST);
+	 	remove(list, 0);
 	 	list.innerHTML = toString(NUMBERS_LIST);
  	} catch (err) {
  		error.innerHTML = err;
  	}		
 }
 
-/* stack Functions */
+/* Funciones de las listas */
  var MAX_ELEMENTO = 5; 
- function create(){
+ function create(){//crea la lista vacía con una determinada longitud que ya esta dada
  	var list = [];
- 	for (var i = 0; i < MAX_ELEMEMENTO; i++){
+ 	for (var i = 0; i < MAX_ELEMENTO; i++){
  		list[i] = Number.NaN;
  	}
  	return list;
  } 
 
- function isEmpty(list){
+ function isEmpty(list){//devuelve verdadero o falso si la lista esta vacia
  	var isEmpty = false;
  	if (isNaN(list[0])){
  		isEmpty = true;
@@ -48,33 +48,42 @@ function popNumber (){
  	return isEmpty;
  } 
 
- function isFull(list){
+ function isFull(list){//devuelve verdadero o falso en función si la lista esta llena
  	var isFull = false;
- 	if (!isNaN(list[MAX_ELEMEMENTO-1])){
+ 	if (!isNaN(list[MAX_ELEMENTO-1])){
  		isFull = true;
  	}
  	return isFull;
  } 
 
- function size(list){
+ function size(list){//Devuelve el número de elementos de la lista
  	var tam = 0;
- 	while (tam < MAX_ELEMEMENTO && !isNaN(list[tam])){
+ 	while (tam < MAX_ELEMENTO && !isNaN(list[tam])){
  		tam++;
  	}
  	return tam;
  } 
 
- function add(list,elem){
+ function add(list,elem){//Añade un nuevo elemento a la lista sino esta llena
  	elem = parseInt(elem);
  	if (isNaN(elem)) {
  		throw "El elemento no es un numero";
  	}
  	if (!isFull(list)){
- 		list[size(list)] = elem;
+		var lenght = size(list);
+		var i = 0;
+		while(i < lenght || isNaN(list[i])){
+			list[i] = elem;
+			i++;
+		}
  	} else {
  		throw "La pila está llena. No puedes poner mas elementos en la lista.";
  	}
  	return size(list);
+ } 
+
+ function capacity(list){//Devuelve la capacidad de la lista
+ 	return MAX_ELEMENTO;
  } 
  
 function addAt(list, elem, index){
@@ -90,35 +99,25 @@ function addAt(list, elem, index){
 		var lenght = size(list);
 		var a;
 		var b = elem;
-		while (i < lenght){
-		var a = list[i];
- 		list[i] = b;
-		b = a;
-		}
+		list[size(list)] = elem;
  	} else {
  		throw "La pila está llena. No puedes poner mas elementos en la lista.";
  	}
  	return size(list);
-}
+} 
 
-function get (list,index){
+function get (list,index){//Devuelve el elemento de la lista de la posicion indicada
 	if (index > MAX_ELEMENTO) {
  		throw "El indice esta fuera de la lista";
  	}
-	var lenght = size(list);
 	else{
-		while (i < index){
-		var a = list[i];
- 		list[i] = b;
-		b = a;
- 	} else {
- 		throw "La pila está llena. No puedes poner mas elementos en la lista.";
- 	}
- 	return size(list);
-	
+		var lenght = size(list);
+		var a = list[index];
+	}
+ 	return a;
 }
 
-function indexOf(list, elem){
+function indexOf(list, elem){//Devuelve la posicion del elemento indicado. Si el elemento no está en la lista devuelve -1
 	elem = parseInt(elem);
 	var tam = size(list);
 	var i = 0;
@@ -127,9 +126,9 @@ function indexOf(list, elem){
  		throw "El index no es un numero";
  	}
 	else{
-		while (i <= tam || encontrado == 1){
+		while (i <= tam || encontrado != i){
 			if (elem === list[i]){
-				encontrado = 1;
+				encontrado = i;
 			}
 			i++;
 		}
@@ -137,7 +136,7 @@ function indexOf(list, elem){
 	return encontrado;
 }
 
-function lastIndexOf (list, elem){
+/*function lastIndexOf (list, elem){//Devuelve la posicion del elemento indicado comenzando por el final. Si el elemento no está en la lista devuele -1
 	elem = parseInt(elem);
 	var tam = size(list);
 	var encontrado = -1;
@@ -145,17 +144,17 @@ function lastIndexOf (list, elem){
  		throw "El elemento no es un numero";
  	}
 	else{
-		while (tam >= 0 || encontrado == 1){
+		while (tam >= 0 || encontrado != tam){
 			if (elem === list[tam]){
-				encontrado = 1;
+				encontrado = tam;
 			}
 			tam--;
 		}
 	}
 	return encontrado;
-}
+}*/
 
- function toString(list){
+ function toString(list){//Devuelve la lista en formato cadena.
  	var str = "";
  	if (!isEmpty(list)){
  		var length = size(list);	
@@ -167,21 +166,17 @@ function lastIndexOf (list, elem){
  	return str;
  } 
 
- function capacity(list){
- 	return MAX_ELEMEMENTO;
- } 
-
- function clear(list){
+ function clear(list){//Limpia la lista
  	var elem = Number.NaN;
- 	if (!isEmpty(stack)){
+ 	if (!isEmpty(list)){
  		var length = size(list);	
  		for (var i=0; i < length;i++){
- 			stack[i] = Number.NaN;
+ 			list[i] = Number.NaN;
  		} 		 		 		
  	} 	
  } 
 
- function firstElement(list){
+ function firstElement(list){//Devuelve el primer elemento de la lista
  	var first;
  	if (!isEmpty(list)){
  		first = list[0]; 		
@@ -191,51 +186,48 @@ function lastIndexOf (list, elem){
  	return first;
  } 
 
- function lastElement(list){
+ function lastElement(list){//Devuelve el ultimo elemento de la lista
  	var last;
+	var tam = size(list) - 1;
  	if (!isEmpty(list)){
- 		last = list[size(list)-1]; 		
+		while(tam >= 0 || list[tam] != isNaN){
+ 		last = list[tam];
+		tam--;
+		}
  	} else {
  		throw "La pila esta vacia.";
  	}
  	return last;
  } 
-function remove(list, index){
-	var i = 0;
+ 
+function remove(list, index){//Elimina el elemento de la posición indicada. Devuelve el elemento borrado
 	length = size(list);
-	var igual = false;
-	if(index > MAX_ELEMEMENTO){
+	var borrado = -1;
+	if(index > MAX_ELEMENTO){
 		throw "El indice esta fuera de los limites de la lista";
 	}
-	while (i < length){
-		if (list[i] == elem || igual ){
-			for(var x = i; x < length; x++){
-				var borrado = list[i];
-				var guardar =  list[(i+1)];
-				list[i] = guardar;
+		if( !isNaN(list[index]) ){
+			borrado = list[index];
+			list[index] = Number.NaN;
 		}
-		igual = true;
-	}
-		i++
-	}
 	return borrado;
 }
 
-function removeElement(list, elem){
+function removeElement(list, elem){//Elimina el elemento indicado de la lista. Devuelve true si se ha podido borrar el elemento, false en caso concreto
 	var i = 0;
-	length = size(list);
-	var igual = false;
+	length = size(list) - 1;
+	var borrado = false;
 	if(isNaN(elem)){
 		throw "El elemento no es un Number";
-	}
-	while (i < length ){
-		if (list[i] == elem || igual ){
-			for(var x = i; x < length; x++){
-				var guardar =  list[(i+1)];
-				lista[i] = guardar;
+	}else{
+		while (i < length || borrado){
+				if(list[i] == elem){
+					var guardar =  list[(i+1)];
+					lista[i] = guardar;
+					borrado = true;
+				}
+					i++
 		}
-		igual = true;
-		i++
 	}
 	return igual;
 }
@@ -244,48 +236,56 @@ function removeElement(list, elem){
 	 if(!isNaN(elem)){
 		 throw "El elemento no es un numero";
 	 }
-	 if(index > MAX_ELEMEMENTO){
+	 if(index > MAX_ELEMENTO){
 		 throw "El indice esta fuera de los limites";
+	 }else{
+		var guardar = list[index];
+		list[index] = elem;
 	 }
-	 var guardar = list[index];
-	 list[index] = elem;
 	 return guardar;
  }
  
- function testStack(){
+ function testList(){
  	//var queue = create (); 	
- 	var stack=[]; 	
+ 	var list=[]; 	
  	console.log ("Capacidad: " + capacity(list));
  	console.log("Es vacía: " + isEmpty(list));
  	console.log("Longitud: " + size(list));
 
- 	try {
-	 	for (var i=0; i<MAX_ELEMEMENTO; i++){
+ 	 /*	try {
+	 	for (var i=0; i<MAX_ELEMENTO; i++){
 	 		console.log("Nº de elementos: " + add(list,i*10));
 	 	}
-	 	add(list,i); //It will generate an exception.
+	 	add(list,i); //Genera una excepcion
+ 	} catch (err) {
+ 		console.log(err);
+ 	}*/
+
+ 	console.log ("Funcion toString: " + toString(list));
+	console.log ("Intercambiamos relleno: " + addAt(list, 4, 0));
+	try{
+	console.log ("Intercambiamos relleno: " + addAt(list, "hola", 0));
+	}catch(err){
+		console.log(err)
+	}
+ 	console.log ("El primer elemento: " + firstElement(list));
+ 	//console.log ("El ultimo elemento: " + lastElement(list));
+	 	
+		
+	console.log ("Elimina el elemento que se encuentra en el index: " + remove(list, list[0]));
+ 	try {
+ 	 		console.log ("Elimina el elemento que se encuentra en el index: " + remove(list, 40));
  	} catch (err) {
  		console.log(err);
  	}
-
- 	console.log ("Los elementos de la lista son: " + toString(list));	 	
- 	console.log ("El primer elemento de la lista: " + firstElement(list));
- 	console.log ("El ultimo elemento de la lista es: " + lastElement(list));
-
- 	console.log ("is 40 in stack: " + search(stack,40));	 	
- 	console.log ("is -40 in stack: " + search(stack,-40));	 	
- 	//clear(stack);
-
- 	try {
-	 	while (true){
-	 		console.log ("Unnonsumed Element: " + peek(stack));
-	 		console.log ("Consumed Element: " + pop(stack));
-	 		console.log ("Elemento : " + toString(list));	 	 		 	
-	 	}
+	
+	console.log ("Elimina el elemento que se encuentra en el index: " + removeElement(list, list[2]));
+	try {
+ 	 		console.log ("Elimina el elemento que se encuentra en el index: " + removeElement(list, "hola"));
  	} catch (err) {
- 		console.log(err); //When the queue is empty, an exception will be catched.
+ 		console.log(err);
  	}
-
- 	console.log ("The stack: " + toString(list));	 	
+	clear(list);
+	console.log ("Funcion toString despues del clear: " + toString(list));	 	
  } 
-window.onload = testStack;
+window.onload = testList;

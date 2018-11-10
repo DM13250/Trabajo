@@ -1,6 +1,6 @@
 "use strict";
 
-/* Page functions */
+/* Pagina de Funciones */
  var NUMBERS_LISTOR = create(); 
  
  function cleanData(){
@@ -21,90 +21,93 @@ function addNumber(num){
 
 function pollNumber (){
 	var error = document.getElementById ("error");
-	var queue = document.getElementById ("queue");
+	var listOr = document.getElementById ("listOr");
 	error.innerHTML = "";  
  	try {
 	 	poll(NUMBERS_QUEUE);
-	 	queue.innerHTML = toString(NUMBERS_QUEUE);
+	 	listOr.innerHTML = toString(NUMBERS_LISTOR);
  	} catch (err) {
  		error.innerHTML = err;
  	}		
 }
 
-/* queue Functions */
+/* Funciones de las listas ordenadas */
  var MAX_ELEMENTO = 5; 
- function create(){
+ function create(){//crea la lista vacía con una determinada longitud que ya esta dada
  	var listOr = [];
  	return listOr;
  } 
 
- function isEmpty(listOr){
+ function isEmpty(listOr){//devuelve verdadero o falso si la lista esta vacia
  	return (listOr.length === 0);
  } 
 
- function isFull(listOr){
+ function isFull(listOr){//devuelve verdadero o falso en función si la lista esta llena
  	return (listOr.length === MAX_ELEMENTO);
  } 
 
- function size(listOr){
+ function size(listOr){//Devuelve el número de elementos de la lista
  	return listOr.length;
  } 
 
- function add(listOr,elem){
+ function add(listOr,elem){//Añade un nuevo elemento mirando colocando los numeros de menor a mayor
  	elem = parseInt(elem);
  	if (isNaN(elem)) {
  		throw "El elemento no es un numero";
  	}
  	if (!isFull(listOr)){
- 		listOr.push(elem);
-		while(i < lenght){
-			if(listOr[i] < elem){
-					i++;
-			} else{
-				listOr.add(elem, listOr[i]);
-			}
-		}
+        if(NaN == listOr[0]){
+           listOr.add(elem, listOr[0]);
+        }else{
+            while(i < lenght){
+                if(listOr[i] < elem){
+                        i++;
+                } else{
+                    listOr.add(elem, listOr[i]);
+                }
+            }
+        }
  	} else {
  		throw "La cola está llena. No puedes poner el elemento en él.";
  	}
  	return size(listOr);
  } 
 
- function toString(listOr){
+ function toString(listOr){//Devuelve la lista en formato cadena.
 	return listOr.toString();
  } 
 
- function capacity(listOr){
+ function capacity(listOr){//Devuelve la capacidad de la lista
  	return MAX_ELEMENTO;
  } 
 
- function clear(listOr){
+ function clear(listOr){//Limpia la lista
  	var elem = Number.NaN;
  	if (!isEmpty(listOr)){
  		listOr.splice(0, listOr.length);	 		 		
  	} 	
  } 
 
- function firstElement(listOr){
- 	var first;
- 	if (!isEmpty(listOr)){
- 		first = listOr[0]; 		
+ function firstElement(listOr){//Devuelve el primer elemento de la lista
+ 	if (isFull(listOr)){
+        throw "El array está lleno.";		
  	} else {
- 		throw "El array está lleno.";
+        var first;
+ 		first = listOr[0]; 
  	}
  	return first;
  } 
 
- function lastElement(listOr){
+ function lastElement(listOr){//Devuelve el ultimo elemento de la lista
  	var last;
- 	if (!isEmpty(listOr)){
+ 	if (!isFull(listOr)){
  		last = listOr[listOr.length-1]; 			
  	} else {
  		throw "El array esta lleno.";
  	}
  	return last;
  } 
-function indexOf(list, elem){
+function indexOf(list, elem){//Devuelve la posicion del elemento indicado. Si el elemento no está en la lista devuelve -1
 	elem = parseInt(elem);
 	var tam = size(list);
 	var i = 0;
@@ -118,7 +121,7 @@ function indexOf(list, elem){
 	return encontrado;
 }
 
-function lastIndexOf (listOr, elem){
+function lastIndexOf (listOr, elem){//Devuelve la posicion del elemento indicado comenzando por el final. Si el elemento no está en la lista devuele -1
 	elem = parseInt(elem);
 	listOr = ordenar(listOr);
 	var tam = size(listOr);
@@ -131,40 +134,57 @@ function lastIndexOf (listOr, elem){
 	}
 	return encontrado;
 }
- function testqueue(){
+
+function filtrar(listOr, elem) {
+    return listOr != elem;
+}
+
+function removeElement(listOr, elem){//Elimina el elemento indicado de la lista. Devuelve true si se ha podido borrar el elemento, false en caso concreto
+	var i = 0;
+	length = size(listOr);
+	var borrado = false;
+	if(isNaN(elem)){
+		throw "El elemento no es un numero";
+	}
+    listOr = listOr.filter(filtrar);
+	return igual;
+}
+ function testListOr(){
  	//var queue = create (); 	
- 	var queue=[]; 	
- 	console.log ("Capacidad: " + capacity(queue));
- 	console.log("Es vacía: " + isEmpty(queue));
- 	console.log("Longitud: " + size(queue));
+ 	var listOr=[]; 	
+ 	console.log ("Capacidad: " + capacity(listOr));
+ 	console.log("Es vacía: " + isEmpty(listOr));
+ 	console.log("Longitud: " + size(listOr));
 
  	try {
-	 	for (var i=0; i<MAX_ELEM_QUEUE; i++){
+	 	for (var i=0; i<MAX_ELEMENTO; i++){
 	 		console.log("Nº de elementos: " + add(listOr,i*10));
 	 	}
-	 	add(listOr,i); //It will generate an exception.
+	 	add(list,i); //Genera una excepcion
  	} catch (err) {
  		console.log(err);
  	}
 
- 	console.log ("The full queue: " + toString(listOr));	 	
- 	console.log ("The first element queue: " + firstElement(listOr));
- 	console.log ("The last element queue: " + lastElement(listOr));
-
- 	console.log ("is 40 in queue: " + search(queue,40));	 	
- 	console.log ("is -40 in queue: " + search(queue,-40));	 	
- 	//clear(queue);
-
+ 	console.log ("Funcion toString: " + toString(listOr));
+ 	console.log ("El primer elemento: " + firstElement(listOr));
+ 	console.log ("El ultimo elemento: " + lastElement(listOr));
+	 	
+		
+	console.log ("Elimina el elemento que se encuentra en el index: " + remove(listOr, listOr[0]));
  	try {
-	 	while (true){
-	 		console.log ("Unnonsumed Element: " + peek(queue));
-	 		console.log ("Consumed Element: " + poll(queue));
-	 		console.log ("The queue: " + toString(listOr));	 	 		 	
-	 	}
+ 	 		console.log ("Elimina el elemento que se encuentra en el index: " + remove(listOr, 40));
  	} catch (err) {
- 		console.log(err); //When the queue is empty, an exception will be catched.
+ 		console.log(err);
  	}
-
- 	console.log ("The queue: " + toString(listOr));	 	
+	
+	console.log ("Elimina el elemento que se encuentra en el index: " + removeElement(listOr, listOr[2]));
+	try {
+ 	 		console.log ("Elimina el elemento que se encuentra en el index: " + removeElement(listOr, "hola"));
+ 	} catch (err) {
+ 		console.log(err);
+ 	}
+	
+	clear(listOr);
+	console.log ("Funcion toString despues del clear: " + toString(listOr)); 	
  } 
-window.onload = testqueue;
+window.onload = testListOr;
