@@ -64,26 +64,17 @@ function popNumber (){
  	return tam;
  } 
 
- function add(list,elem){//Añade un nuevo elemento a la lista sino esta llena
+ function add(list,elem){
  	elem = parseInt(elem);
  	if (isNaN(elem)) {
- 		throw "El elemento no es un numero";
+ 		throw "The element is not a number";
  	}
  	if (!isFull(list)){
-		var lenght = size(list);
-		var i = 0;
-		while(i < lenght || isNaN(list[i])){
-			list[i] = elem;
-			i++;
-		}
+ 		list[size(list)] = elem;
  	} else {
- 		throw "La pila está llena. No puedes poner mas elementos en la lista.";
+ 		throw "The queue is Full. You can't put the element in it";
  	}
  	return size(list);
- } 
-
- function capacity(list){//Devuelve la capacidad de la lista
- 	return MAX_ELEMENTO;
  } 
  
 function addAt(list, elem, index){
@@ -94,15 +85,11 @@ function addAt(list, elem, index){
 	if(index > MAX_ELEMENTO){
 		throw "El indice esta fuera de los limites de la lista";
 	}
- 	if (!isFull(list)){
 		var i = index;
 		var lenght = size(list);
 		var a;
 		var b = elem;
 		list[size(list)] = elem;
- 	} else {
- 		throw "La pila está llena. No puedes poner mas elementos en la lista.";
- 	}
  	return size(list);
 } 
 
@@ -122,11 +109,11 @@ function indexOf(list, elem){//Devuelve la posicion del elemento indicado. Si el
 	var tam = size(list);
 	var i = 0;
 	var encontrado = -1;
-	if (isNaN(index)) {
- 		throw "El index no es un numero";
+	if (isNaN(elem)) {
+ 		throw "El elemento no es un numero";
  	}
 	else{
-		while (i <= tam || encontrado != i){
+		while (i <= tam && encontrado != i){
 			if (elem === list[i]){
 				encontrado = i;
 			}
@@ -136,7 +123,7 @@ function indexOf(list, elem){//Devuelve la posicion del elemento indicado. Si el
 	return encontrado;
 }
 
-/*function lastIndexOf (list, elem){//Devuelve la posicion del elemento indicado comenzando por el final. Si el elemento no está en la lista devuele -1
+function lastIndexOf(list, elem){//Devuelve la posicion del elemento indicado. Si el elemento no está en la lista devuelve -1
 	elem = parseInt(elem);
 	var tam = size(list);
 	var encontrado = -1;
@@ -144,7 +131,7 @@ function indexOf(list, elem){//Devuelve la posicion del elemento indicado. Si el
  		throw "El elemento no es un numero";
  	}
 	else{
-		while (tam >= 0 || encontrado != tam){
+		while (tam > 0 && encontrado != tam){
 			if (elem === list[tam]){
 				encontrado = tam;
 			}
@@ -152,7 +139,11 @@ function indexOf(list, elem){//Devuelve la posicion del elemento indicado. Si el
 		}
 	}
 	return encontrado;
-}*/
+} 
+
+ function capacity(list){
+ 	return MAX_ELEMENTO;
+ } 
 
  function toString(list){//Devuelve la lista en formato cadena.
  	var str = "";
@@ -186,19 +177,15 @@ function indexOf(list, elem){//Devuelve la posicion del elemento indicado. Si el
  	return first;
  } 
 
- function lastElement(list){//Devuelve el ultimo elemento de la lista
+  function lastElement(list){
  	var last;
-	var tam = size(list) - 1;
  	if (!isEmpty(list)){
-		while(tam >= 0 || list[tam] != isNaN){
- 		last = list[tam];
-		tam--;
-		}
+ 		last = list[size(list)-1]; 		
  	} else {
- 		throw "La pila esta vacia.";
+ 		throw "La lista esta llena.";
  	}
  	return last;
- } 
+ }
  
 function remove(list, index){//Elimina el elemento de la posición indicada. Devuelve el elemento borrado
 	length = size(list);
@@ -223,13 +210,13 @@ function removeElement(list, elem){//Elimina el elemento indicado de la lista. D
 		while (i < length || borrado){
 				if(list[i] == elem){
 					var guardar =  list[(i+1)];
-					lista[i] = guardar;
+					list[i] = guardar;
 					borrado = true;
 				}
 					i++
 		}
 	}
-	return igual;
+	return borrado;
 }
  
  function set(list, elem, index){
@@ -245,21 +232,20 @@ function removeElement(list, elem){//Elimina el elemento indicado de la lista. D
 	 return guardar;
  }
  
- function testList(){
- 	//var queue = create (); 	
+ function testList(){ 	
  	var list=[]; 	
  	console.log ("Capacidad: " + capacity(list));
  	console.log("Es vacía: " + isEmpty(list));
  	console.log("Longitud: " + size(list));
 
- 	 /*	try {
-	 	for (var i=0; i<MAX_ELEMENTO; i++){
+ 	try {
+	 	for (var i=0; i<(MAX_ELEMENTO); i++){
 	 		console.log("Nº de elementos: " + add(list,i*10));
 	 	}
 	 	add(list,i); //Genera una excepcion
  	} catch (err) {
  		console.log(err);
- 	}*/
+ 	}
 
  	console.log ("Funcion toString: " + toString(list));
 	console.log ("Intercambiamos relleno: " + addAt(list, 4, 0));
@@ -269,23 +255,22 @@ function removeElement(list, elem){//Elimina el elemento indicado de la lista. D
 		console.log(err)
 	}
  	console.log ("El primer elemento: " + firstElement(list));
- 	//console.log ("El ultimo elemento: " + lastElement(list));
+ 	console.log ("El ultimo elemento: " + lastElement(list));
 	 	
 		
-	console.log ("Elimina el elemento que se encuentra en el index: " + remove(list, list[0]));
+	console.log ("Elimina el elemento que se encuentra en el index: " + remove(list, 1));
  	try {
- 	 		console.log ("Elimina el elemento que se encuentra en el index: " + remove(list, 40));
+ 	 		console.log ("Elimina el elemento que se encuentra en el index: " + remove(list, 2));
  	} catch (err) {
  		console.log(err);
  	}
-	
-	console.log ("Elimina el elemento que se encuentra en el index: " + removeElement(list, list[2]));
+	console.log ("Elimina el elemento que quieras de la lista: " + removeElement(list, 0));
 	try {
- 	 		console.log ("Elimina el elemento que se encuentra en el index: " + removeElement(list, "hola"));
+ 	 		console.log ("Elimina el elemento que quiereas de la lista: " + removeElement(list, "hola"));
  	} catch (err) {
  		console.log(err);
  	}
 	clear(list);
-	console.log ("Funcion toString despues del clear: " + toString(list));	 	
+	console.log ("Funcion toString despues del clear: " + clear(list));	 	
  } 
 window.onload = testList;

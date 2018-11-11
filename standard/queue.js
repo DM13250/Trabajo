@@ -24,7 +24,7 @@ function pollNumber (){
 	var listOr = document.getElementById ("listOr");
 	error.innerHTML = "";  
  	try {
-	 	poll(NUMBERS_QUEUE);
+	 	poll(NUMBERS_LISTOR);
 	 	listOr.innerHTML = toString(NUMBERS_LISTOR);
  	} catch (err) {
  		error.innerHTML = err;
@@ -50,29 +50,38 @@ function pollNumber (){
  	return listOr.length;
  } 
 
- function add(listOr,elem){//Añade un nuevo elemento mirando colocando los numeros de menor a mayor
+ function add(listOr,elem){//Añade un nuevo elemento mirando colocando los numeros de mayor a menor
  	elem = parseInt(elem);
  	if (isNaN(elem)) {
  		throw "El elemento no es un numero";
  	}
  	if (!isFull(listOr)){
-        if(NaN == listOr[0]){
-           listOr.add(elem, listOr[0]);
-        }else{
-            while(i < lenght){
-                if(listOr[i] < elem){
-                        i++;
-                } else{
-                    listOr.add(elem, listOr[i]);
-                }
-            }
-        }
- 	} else {
- 		throw "La cola está llena. No puedes poner el elemento en él.";
+			var tam = size(listOr);
+			var encontrar = false;
+			var i = 0;
+			while (tam > 0 && !encontrar){
+				if(listOr[listOr - 1] <= elem){
+						encontrar = true;
+				}else{
+					listOr[tam] =listOr[tam -1];
+					tam--;
+				}
+			}
+		listOr[tam] = elem;
+ 	}else{
+ 		throw "La lista esta llena.";
  	}
  	return size(listOr);
  } 
 
+ function get (listOr,index){ //Devuelve el elemento de la lista de la posicion indicada
+	if (index > MAX_ELEMENTO) {
+ 		throw "El indice esta fuera de la lista";
+ 	}
+ 	return listOr[index];
+	
+}
+ 
  function toString(listOr){//Devuelve la lista en formato cadena.
 	return listOr.toString();
  } 
@@ -88,11 +97,12 @@ function pollNumber (){
  	} 	
  } 
 
- function firstElement(listOr){//Devuelve el primer elemento de la lista
+  function firstElement(listOr){//Devuelve el primer elemento de la lista
+ 	var first;
+	if(isEmpty(listOr)){
+		throw "La lista esta vacia.";
+	}
  	if (isFull(listOr)){
-        throw "El array está lleno.";		
- 	} else {
-        var first;
  		first = listOr[0]; 
  	}
  	return first;
@@ -100,44 +110,47 @@ function pollNumber (){
 
  function lastElement(listOr){//Devuelve el ultimo elemento de la lista
  	var last;
- 	if (!isFull(listOr)){
- 		last = listOr[listOr.length-1]; 			
- 	} else {
- 		throw "El array esta lleno.";
+	var tam = size(listOr)-1;
+	if(isEmpty(listOr)){
+		throw "La lista esta vacia.";
+	}
+	if (isFull(listOr)){
+ 		last = listOr[tam]; 
  	}
  	return last;
  } 
-function indexOf(list, elem){//Devuelve la posicion del elemento indicado. Si el elemento no está en la lista devuelve -1
-	elem = parseInt(elem);
-	var tam = size(list);
+ function indexOf (listOr, elem){//Devuelve la posicion del elemento indicado. Si el elemento no está en la lista devuelve -1
+	if(isNaN(elem)){
+		throw "El elemento no es numero";
+	}
+ 	if (!isEmpty(listOr)){
+		var encontrado = -1; 
+		encontrado = listOr.indexOf(elem);
+ 	}
+	return encontrado;
+ }
+ 
+ function lastIndexOf (listOr, elem){//Devuelve la posicion del elemento indicado comenzando por el final. Si el elemento no está en la lista devuele -1
+	if(isNaN(elem)){
+		throw "El elemento no es numero";
+	}
+ 	if (!isEmpty(listOr)){
+		var encontrado = -1;
+ 		encontrado = listOr.lastIndexOf(elem);
+ 	}
+	return encontrado;
+ }
+
+  function remove(listOr, index){//Elimina el elemento de la posición indicada. Devuelve el elemento borrado
+	if(index > MAX_ELEMENTO){
+		throw "El indice esta fuera de los limites de la lista";
+	}
 	var i = 0;
-	var encontrado = -1;
-	if (isNaN(index)) {
- 		throw "El index no es un numero";
- 	}
-	else{
-		var encontrado = listOr.indexOf(elem);
+	length = size(listOr);
+	var borrado = -1;
+	var borrado = listOr.splice(index,1);
+    return borrado;
 	}
-	return encontrado;
-}
-
-function lastIndexOf (listOr, elem){//Devuelve la posicion del elemento indicado comenzando por el final. Si el elemento no está en la lista devuele -1
-	elem = parseInt(elem);
-	listOr = ordenar(listOr);
-	var tam = size(listOr);
-	var encontrado = -1;
-	if (isNaN(elem)) {
- 		throw "El elemento no es un numero";
- 	}
-	else{
-		var encontrado = listOr.lastIndexOf(elem);
-	}
-	return encontrado;
-}
-
-function filtrar(listOr, elem) {
-    return listOr != elem;
-}
 
 function removeElement(listOr, elem){//Elimina el elemento indicado de la lista. Devuelve true si se ha podido borrar el elemento, false en caso concreto
 	var i = 0;
@@ -146,8 +159,15 @@ function removeElement(listOr, elem){//Elimina el elemento indicado de la lista.
 	if(isNaN(elem)){
 		throw "El elemento no es un numero";
 	}
-    listOr = listOr.filter(filtrar);
-	return igual;
+	while(length > 0 && !borrado){
+		if(elem == listOr[length]){
+			var pos = length;
+			borrado = true;
+		}
+		length--;
+	}
+    listOr.splice(pos, 1);
+	return borrado;
 }
  function testListOr(){
  	//var queue = create (); 	
@@ -157,10 +177,10 @@ function removeElement(listOr, elem){//Elimina el elemento indicado de la lista.
  	console.log("Longitud: " + size(listOr));
 
  	try {
-	 	for (var i=0; i<MAX_ELEMENTO; i++){
+	 	for (var i=0; i<5; i++){
 	 		console.log("Nº de elementos: " + add(listOr,i*10));
 	 	}
-	 	add(list,i); //Genera una excepcion
+	 	add(listOr,i); //It will generate an exception.
  	} catch (err) {
  		console.log(err);
  	}
@@ -169,17 +189,35 @@ function removeElement(listOr, elem){//Elimina el elemento indicado de la lista.
  	console.log ("El primer elemento: " + firstElement(listOr));
  	console.log ("El ultimo elemento: " + lastElement(listOr));
 	 	
+	console.log ("Posicion del elemento dado mirando el comienzo: " + indexOf (listOr, 0));
+	console.log ("Posicion del elemento dado mirando el comienzo: " + indexOf (listOr, 90));
+	
+	try {
+	console.log ("Posicion del elemento dado mirando el comienzo: " + indexOf (listOr, "hola"));
+ 	} catch (err) {
+ 		console.log(err);
+    }
+	
+	console.log ("Posicion del elemento dado mirando desde el final: " + lastIndexOf (listOr, 0));
+	console.log ("Posicion del elemento dado mirando desde el final: " + lastIndexOf (listOr, 90));
+	
+	try {
+		console.log ("Posicion del elemento dado mirando desde el final: " + lastIndexOf (listOr, "hola"));
+ 	} catch (err) {
+ 		console.log(err);
+    }	
 		
-	console.log ("Elimina el elemento que se encuentra en el index: " + remove(listOr, listOr[0]));
+
+	console.log ("Elimina el elemento que se encuentra en el index: " + remove(listOr, 0));
  	try {
- 	 		console.log ("Elimina el elemento que se encuentra en el index: " + remove(listOr, 40));
+ 	 		console.log ("Elimina el elemento que se encuentra en el index: " + remove(listOr, "hola"));
  	} catch (err) {
  		console.log(err);
  	}
 	
-	console.log ("Elimina el elemento que se encuentra en el index: " + removeElement(listOr, listOr[2]));
+	console.log ("Elimina el elemento que quieres eliminar: " + removeElement(listOr, listOr[2]));
 	try {
- 	 		console.log ("Elimina el elemento que se encuentra en el index: " + removeElement(listOr, "hola"));
+ 	 		console.log ("Elimina el elemento que quieres eliminar: " + removeElement(listOr, "hola"));
  	} catch (err) {
  		console.log(err);
  	}
